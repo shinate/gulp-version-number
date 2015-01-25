@@ -1,7 +1,17 @@
 # gulp-version-number #
 Add version number to js/css/image in HTML
 
-## configure ##
+## usage ##
+
+    var version = require('gulp-version-number');
+
+    gulp.src('src/*.html')
+        .pipe(version({
+    		... configuration ...
+        }))
+        .pipe(gulp.dest('build'));
+
+## configuration ##
 
 **config**
 
