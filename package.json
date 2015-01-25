@@ -1,0 +1,20 @@
+{
+  "name": "gulp-version-number",
+  "version": "0.0.1",
+  "author": {
+    "name": "莳子",
+    "email": "shine.wangrs@gmail.com"
+  },
+  "description": "create a md5 version number to replace keyword #{VERSION}# in the file",
+  "main": "index.js",
+  "keywords": [],
+  "dependencies": {},
+  "license": "MIT",
+  "devDependencies": {
+    "graceful-fs": "^3.0.5",
+    "gulp-util": "^3.0.2",
+    "map-stream": "0.0.5",
+    "temp-write": "^1.1.0",
+    "util": "^0.10.3"
+  }
+}
