@@ -91,7 +91,8 @@ Add version number to js/css/image in HTML
                     'key' : '_v',
                     'value' : '%DATE%',
                     'cover' : 1
-                 }
+                }
+            ]
         },
      
         /**
