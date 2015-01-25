@@ -54,6 +54,16 @@ var renderingURL = require('./lib/renderingURL');
 var queryToJson = require('./lib/queryToJson');
 var jsonToQuery = require('./lib/jsonToQuery');
 
+/**
+ * options:
+ * 	type:
+ * 		%DATE% - 日期
+ * 		%DT% - 日期时间
+ * 		%TS% - 时间戳
+ * 		%TSM% - 时间戳(毫秒级)
+ * 		%MD5% - MD5(时间戳)
+ * 		%MDS% - MD5(MD5(时间戳)+salt)
+ */
 function version(v) {
 
     if ( typeof v === 'undefined') {
@@ -79,7 +89,7 @@ function version(v) {
             v = md5(DT.getTime().toString());
             break;
         case '%MDS%':
-            v = md5(DT.getTime().toString() + randomString(6));
+            v = md5(md5(DT.getTime().toString()) + randomString(6));
             break;
         default:
             break;
@@ -88,18 +98,7 @@ function version(v) {
     return v;
 }
 
-/**
- * options:
- * 	type:
- * 		%DATE% - 日期
- * 		%DT% - 日期时间
- * 		%TS% - 时间戳
- * 		%TSM% - 时间戳(毫秒级)
- * 		%MD5% - MD5(时间戳)
- * 		%MDS% - MD5(时间戳+salt)
- * 	replace:
- * 	append:
- */
+
 module.exports = function(options) {
 
     var options = util._extend({

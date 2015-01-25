@@ -132,5 +132,5 @@ Add version number to js/css/image in HTML
 - %TS% 时间戳 [**INT**10]
 - %TSM% 时间戳(毫秒级) [**INT**13]
 - %MD5% MD5(时间戳) [**STRING**32]
-- %MDS% MD5(时间戳+salt) [**STRING**32]
+- %MDS% MD5(MD5(时间戳)+salt) [**STRING**32]
 - (STRING) 非以上关键字视为自定义
