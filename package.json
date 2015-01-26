@@ -1,7 +1,7 @@
 {
 	"name": "gulp-version-number",
 	"description": "Add version number to css/js/image... in HTML file.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": {
 		"name": "Shinate",
 		"email": "shine.wangrs@gmail.com"
@@ -21,6 +21,13 @@
 	"keywords": ["gulpplugin"],
 	"dependencies": {},
 	"license": "MIT",
+	"dependencies": {
+		"graceful-fs": "^3.0.5",
+		"gulp-util": "^3.0.2",
+		"map-stream": "0.0.5",
+		"temp-write": "^1.1.0",
+		"util": "^0.10.3"
+	},
 	"devDependencies": {
 		"graceful-fs": "^3.0.5",
 		"gulp-util": "^3.0.2",
