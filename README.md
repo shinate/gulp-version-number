@@ -134,3 +134,16 @@ Add version number to js/css/image in HTML
 - %MD5% MD5(时间戳) [**STRING**32]
 - %MDS% MD5(MD5(时间戳)+salt) [**STRING**32]
 - (STRING) 非以上关键字视为自定义
+
+
+## change log ##
+
+##### = 0.1.1 = #####
+- output功能实装，将版本输出到文件。
+
+
+##### = 0.1.1 = #####
+- 修复正则功能
+
+##### = 0.1.0 = #####
+**I was born**

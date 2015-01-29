@@ -98,7 +98,6 @@ function version(v) {
     return v;
 }
 
-
 module.exports = function(options) {
 
     var options = util._extend({
@@ -238,9 +237,16 @@ module.exports = function(options) {
                 }
             }
             return content;
-            return content;
         }
     };
+
+    if (options.output && options.output.file) {
+        fs.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function(err) {
+            if (err)
+                throw err;
+            console.log('[gulp-version-number] Output to file: ' + options.output.file);
+        });
+    }
 
     return map(function(file, cb) {
 
