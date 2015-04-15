@@ -138,7 +138,10 @@ Add version number to js/css/image in HTML
 
 ## change log ##
 
-##### = 0.1.1 = #####
+##### = 0.1.3 = #####
+- bugfix: 样式匹配方式修复
+
+##### = 0.1.2 = #####
 - output功能实装，将版本输出到文件。
 
 

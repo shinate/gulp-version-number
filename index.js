@@ -182,7 +182,7 @@ module.exports = function(options) {
 
     var appendto = {
         'css' : function(content, k, v) {
-            var sts = content.match(/<link[^>]*type=['"]?text\/css['"]?[^>]*>/g);
+            var sts = content.match(/<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
                     var _RULE = sts[i].match(/href=['"]?([^>'"]*)['"]?/);
