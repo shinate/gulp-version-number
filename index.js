@@ -1,41 +1,63 @@
 /**
  * config : {
+ * 
+ *  // VALUE, default: '%MDS%'
  *	'value' : '%MDS%',
- * 	//替换
+ * 
+ * 	// REPLACE
  *	'replaces' : [
- * 		//非array, 则替换为全局type
+ * 		// if not an array, replace to global value (config.value)
  *		/#{VERSION}#/g,
  *		[/#{VERSION_REPlACE}#/g, '%TS%']
  *	],
- *	//追加
+ * 
+ *	// APPEND
  *	'append' : {
+ * 
+ *      // keyword
  *		'key' : '_v',
+ * 
+ *      // Whether to overwrite the existing parameters
+ *      //  - default: 0 (don't replace)
  *		'cover' : 0,
- * 		//追加到：'all' 或者 (ARRAY)具体项
- *		'to' :[
- * 			//(STRING)用全局规则替换
+ * 
+ * 		// Append to：ALL('all') or any specific types(ARRAY),
+ *      // others will passing.
+ *		'to' : [
+ * 
+ * 			// (STRING) If this option is a string, apply global replace rules
  * 			'css',
- * 			//(OBJECT)用自定义的规则进行替换，缺失项会取全局中的设置进行补全
+ * 
+ * 			// (OBJECT) With custom rules to be replaced, the
+ *          // missing items will take the global settings in
+ *          // the completion
  * 			{
  *				'type' : 'js',
  *				'key' : '_v',
  *				'value' : '%DATE%',
  *				'cover' : 1
  *			},
- * 			//(ARRAY)指定类别和value，其他项参考全局设置，如有需求请使用object方式配置
+ * 
+ * 			// (ARRAY) More simple than the object, Just specify
+ *          // the type and value
  * 			['image', '%TS%']
  *		},
- * 		//输出到配置文件
+ * 
+ * 		// Output to config file
  *		'output' : {
  *			'file' : 'version.json'
  *		}
  *	}
  *
- * 	权重 - 覆盖关系
- *  (OBJECT)config.append.to[x].type == (ARRAY)config.append.to[x][0] == (STRING)config.append.to[x]
- *  config.append.to[x].key > config.append.key
- *  config.append.to[x].cover > config.append.cover
- *  config.append.to[x].value == config.append.to[x][1] [ (if cover == true) > (else) == config.replace[x][1] ] > config.value
+ * --------------------------------------------
+ * Priority - Covering relations:
+ * 
+ *     (OBJECT)config.append.to[x].type == (ARRAY)config.append.to[x][0] == (STRING)config.append.to[x]
+ *     config.append.to[x].key > config.append.key
+ *     config.append.to[x].cover > config.append.cover
+ *     config.append.to[x].value == config.append.to[x][1] [ (if cover == true) > (else) == config.replace[x][1] ] > config.value
+ *
+ * For details, please read the README
  */
 
 'use strict';

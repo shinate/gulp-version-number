@@ -18,83 +18,91 @@ Add version number to js/css/image in HTML
     {
     
         /**
-         * 全局version取值设置
-         * 默认为%MDS%
+         * Global version value
+         * default: %MDS%
          */
         'value' : '%MDS%',
     
         /**
-         * 关键字替换模式
+         * MODE: REPLACE
          * eg:
-         *    ['关键字', /regexp/ig, ['关键字'], [/regexp/ig, '%MD5%']]
+         *    'keyword'
+         *    /regexp/ig
+         *    ['keyword']
+         *    [/regexp/ig, '%MD5%']]
          */
         'replaces' : [
         
             /**
-             * (STRING/REGEXP)
-             * 替换关键字, version 取值为全局 config.value
+             * {String|Regexp} Replace Keyword/Rules to global value (config.value)
              */
             '#{VERSION_REPlACE}#',
             
             /**
-             * (ARRAY)
-             * 替换config.replaces[x][0]为config.replaces[x][1]
-             * 若不设置config.replaces[x][1]，则version取值为config.value
+             * {Array}
+             * Replace keyword to custom value
+             * if just have keyword, the value will use the global value (config.value).
              */    
             [/#{VERSION_REPlACE}#/g, '%TS%']
         ],
         
         
         /**
-         * 追加模式
-         * 追加模式 可以 与 替换模式同时存在，将于替换模式执行后执行
+         * MODE: APPEND
+         * Can coexist and replace, after execution to replace
          */
         'append' : {
         
             /**
-             * 追加的参数
+             * Parameter
              */
             'key' : '_v',
             
             /**
-             * 是否覆盖原参数
-             * 默认  0
-             * 如果参数中存在版本号关键字，默认被视为“自定义”，不予以覆盖
-             * 若需要覆盖，此处cover设置为1
+             * Whether to overwrite the existing parameters
+             * default: 0 (don't overwrite)
+             * If the parameter already exists, as a "custom", covering not executed.
+             * If you need to cover, please set to 1
              */
             'cover' : 0,
             
             /**
-             * 追加到具体位置
-             * (STRING)'all' 包括 css/js/image 全部替换，取值参考全局设置
-             * 或
-             * (ARRAY)具体项，单独设置css js image的替换规则
-             * 不设置则认为无追加，config.append功能无效
-             * 成员可以为(STRING/ARRAY/OBJECT)
+             * Appended to the position (specify type)
+             * {String|Array|Object}
+             * If you set to 'all', will apply to all type, rules will use the global setting.
+             * If an array or object, will use your custom rules.
+             * others will passing.
+             * 
              * eg:
-             *     ['js', ['js'], {type:'js'}, ['css', '%DATE%'] ...]
+             *     'js'
+             *     ['js']
+             *     {type:'js'}
+             *     ['css', '%DATE%']
              */
             'to' : [
             
                 /**
-                 * (STRING)
-                 * 用全局规则替换
+                 * {String} Specify type, the value is the global value
                  */
                 'css',
                 
                 /**
-                 * (ARRAY)
-                 * 指定类别和version的取值, key、cover项参考全局设置，如有需求请使用object方式配置
-                 * config.append.to[x][0]必须设置，否则视为无效
-                 * config.append.to[x][1]可以省略，取值会使用全局config.value
+                 * {Array}
+                 * Specify type, keyword and cover rules will use the global 
+                 * setting, If you need more details, please use the object 
+                 * configure.
+                 *
+                 * argument 0 necessary, otherwise passing.
+                 * argument 1 optional, the value will use the global value
                  */
                   ['image', '%TS%'],
                   
                 /**
-                 * (OBJECT)
-                 * 用详细的自定义的规则进行替换
-                 * 缺失项会取全局中的设置进行补全
-                 * type 必须设置，否则视为无效
+                 * {Object}
+                 * Use detailed custom rules to replace, missing items will 
+                 * be taken in setting the global completion
+                 
+                 * type is necessary, otherwise passing.
                  */
                 {
                     'type' : 'js',
@@ -106,7 +114,7 @@ Add version number to js/css/image in HTML
         },
      
         /**
-         * 输出到配置文件
+         * Output to config file
          */
         'output' : {
             'file' : 'version.json'
@@ -115,37 +123,41 @@ Add version number to js/css/image in HTML
 
 ---
 
-**权重 - 覆盖关系**
+**Priority - Covering relations**
 
-- (OBJECT)config.append.to[x].type == (ARRAY)config.append.to[x][0] == (STRING)config.append.to[x]
+- {Object}config.append.to[x].type == {Array}config.append.to[x][0] == {String}config.append.to[x]
 - config.append.to[x].key > config.append.key
 - config.append.to[x].cover > config.append.cover
 - config.append.to[x].value == config.append.to[x][1] [ (IF cover is TRUE) > (ELSE) == config.replace[x][1] ] > config.value
 
-## options ##
+## Options ##
 
-**version types**
+**Version types**
 
-- %DATE% 日期 [**YYYYMMDD**]
-- %DT% 日期时间 [**YYYYMMDDHHIISS**]
-- %TS% 时间戳 [**INT**10]
-- %TSM% 时间戳(毫秒级) [**INT**13]
-- %MD5% MD5(时间戳) [**STRING**32]
-- %MDS% MD5(MD5(时间戳)+salt) [**STRING**32]
-- (STRING) 非以上关键字视为自定义
+- %DATE% date [**YYYYMMDD**]
+- %DT% date + time [**YYYYMMDDHHIISS**]
+- %TS% timestamp [**INT**10]
+- %TSM% timestamp(millisecond) [**INT**13]
+- %MD5% MD5(timestamp) [**STRING**32]
+- %MDS% MD5(MD5(timestamp) + salt) [**STRING**32]
+- {STRING} In addition to the above keywords, considered custom
 
 
-## change log ##
+## Change log ##
+
+##### = 0.1.4 = #####
+- Detailed description comment and readme.
+- Change salt to length 8
 
 ##### = 0.1.3 = #####
-- bugfix: 样式匹配方式修复
+- BUGFIX: css rules
 
 ##### = 0.1.2 = #####
-- output功能实装，将版本输出到文件。
+- Output function mounting, the version output to a file.
 
 
 ##### = 0.1.1 = #####
-- 修复正则功能
+- BUGFIX: regexp
 
 ##### = 0.1.0 = #####
 **I was born**
