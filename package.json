@@ -1,38 +1,38 @@
 {
-	"name": "gulp-version-number",
-	"description": "Add version number to css/js/image... in HTML file.",
-	"version": "0.1.3",
-	"author": {
-		"name": "Shinate",
-		"email": "shine.wangrs@gmail.com"
-	},
-	"bugs": {
-		"url": "https://github.com/shinate/gulp-version-number/issues"
-	},
-	"main": "index.js",
-	"homepage": "https://github.com/shinate/gulp-version-number/",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/shinate/gulp-version-number.git"
-	},
-	"engines": {
-		"node": ">= 0.9"
-	},
-	"keywords": ["gulpplugin"],
-	"dependencies": {},
-	"license": "MIT",
-	"dependencies": {
-		"graceful-fs": "^3.0.5",
-		"gulp-util": "^3.0.2",
-		"map-stream": "0.0.5",
-		"temp-write": "^1.1.0",
-		"util": "^0.10.3"
-	},
-	"devDependencies": {
-		"graceful-fs": "^3.0.5",
-		"gulp-util": "^3.0.2",
-		"map-stream": "0.0.5",
-		"temp-write": "^1.1.0",
-		"util": "^0.10.3"
-	}
+    "name": "gulp-version-number",
+    "description": "Add version number to css/js/image... in HTML file.",
+    "version": "0.1.3",
+    "author": {
+        "name": "Shinate",
+        "email": "shine.wangrs@gmail.com"
+    },
+    "bugs": {
+        "url": "https://github.com/shinate/gulp-version-number/issues"
+    },
+    "main": "index.js",
+    "homepage": "https://github.com/shinate/gulp-version-number/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/shinate/gulp-version-number.git"
+    },
+    "engines": {
+        "node": ">= 0.9"
+    },
+    "keywords": ["gulp", "plugin"],
+    "dependencies": {},
+    "license": "MIT",
+    "dependencies": {
+        "graceful-fs": "^3.0.5",
+        "gulp-util": "^3.0.2",
+        "map-stream": "0.0.5",
+        "temp-write": "^1.1.0",
+        "util": "^0.10.3"
+    },
+    "devDependencies": {
+        "graceful-fs": "^3.0.5",
+        "gulp-util": "^3.0.2",
+        "map-stream": "0.0.5",
+        "temp-write": "^1.1.0",
+        "util": "^0.10.3"
+    }
 }

@@ -54,16 +54,6 @@ var renderingURL = require('./lib/renderingURL');
 var queryToJson = require('./lib/queryToJson');
 var jsonToQuery = require('./lib/jsonToQuery');
 
-/**
- * options:
- * 	type:
- * 		%DATE% - 日期
- * 		%DT% - 日期时间
- * 		%TS% - 时间戳
- * 		%TSM% - 时间戳(毫秒级)
- * 		%MD5% - MD5(时间戳)
- * 		%MDS% - MD5(MD5(时间戳)+salt)
- */
 function version(v) {
 
     if ( typeof v === 'undefined') {
@@ -98,6 +88,18 @@ function version(v) {
     return v;
 }
 
+/**
+ * options:
+ *  type:
+ *      %DATE% - date
+ *      %DT% - date + time
+ *      %TS% - timestamp length:10
+ *      %TSM% - timestamp(millisecond length:13)
+ *      %MD5% - MD5(timestamp)
+ *      %MDS% - MD5(MD5(timestamp)+salt)
+ * 
+ *      default: %TS%
+ */
 module.exports = function(options) {
 
     var options = util._extend({
@@ -239,7 +241,10 @@ module.exports = function(options) {
             return content;
         }
     };
-
+    
+    /**
+     * output a json version file
+     */
     if (options.output && options.output.file) {
         fs.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function(err) {
             if (err)

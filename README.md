@@ -107,7 +107,6 @@ Add version number to js/css/image in HTML
      
         /**
          * 输出到配置文件
-         * !!此功能暂时未实装
          */
         'output' : {
             'file' : 'version.json'
