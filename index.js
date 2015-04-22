@@ -79,7 +79,7 @@ function version(v) {
             v = md5(DT.getTime().toString());
             break;
         case '%MDS%':
-            v = md5(md5(DT.getTime().toString()) + randomString(6));
+            v = md5(md5(DT.getTime().toString()) + randomString(8));
             break;
         default:
             break;
