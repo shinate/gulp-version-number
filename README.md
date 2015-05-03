@@ -62,7 +62,7 @@ Add version number to js/css/image in HTML
              * Whether to overwrite the existing parameters
              * default: 0 (don't overwrite)
              * If the parameter already exists, as a "custom", covering not executed.
-             * If you need to cover, please set to 1
+             * If you need to cover, please set to 1
              */
             'cover' : 0,
             
