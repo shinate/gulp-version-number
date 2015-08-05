@@ -1,6 +1,8 @@
 # gulp-version-number #
 Add version number to js/css/image in HTML
 
+[![NPM version](https://img.shields.io/npm/v/fecs.svg?style=flat)](https://www.npmjs.com/package/gulp-version-number)
+
 ## usage ##
 
     var version = require('gulp-version-number');
