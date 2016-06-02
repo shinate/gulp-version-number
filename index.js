@@ -51,7 +51,7 @@
  *
  * --------------------------------------------
  * Priority - Covering relations:
- * 
+ *
  *     (OBJECT)config.append.to[x].type == (ARRAY)config.append.to[x][0] == (STRING)config.append.to[x]
  *     config.append.to[x].key > config.append.key
  *     config.append.to[x].cover > config.append.cover
@@ -78,16 +78,16 @@ var jsonToQuery = require('./lib/jsonToQuery');
 
 function version(v) {
 
-    if ( typeof v === 'undefined') {
+    if (typeof v === 'undefined') {
         return null;
     }
 
-    if (v.indexOf('%')) {
+    if (v.indexOf('%') > -1) {
         v = v.toUpperCase();
     }
 
     var DT = new Date();
-    switch(v) {
+    switch (v) {
         case '%DATE%':
             v = DT.getFullYear() + leadZero(DT.getMonth() + 1, 2) + leadZero(DT.getDate(), 2);
             break;
@@ -119,17 +119,17 @@ function version(v) {
  *      %TSM% - timestamp(millisecond length:13)
  *      %MD5% - MD5(timestamp)
  *      %MDS% - MD5(MD5(timestamp)+salt)
- * 
+ *
  *      default: %TS%
  */
-module.exports = function(options) {
+module.exports = function (options) {
 
     var options = util._extend({
-        'value' : '%TS%'
+        'value': '%TS%'
     }, options || {});
 
     var versionNumberList = {
-        main : version(options.value)
+        main: version(options.value)
     };
 
     function apply_replace(content, config) {
@@ -168,17 +168,17 @@ module.exports = function(options) {
             if (util.isArray(apList)) {
                 var apRule = {};
                 for (var i = 0, key; i < apList.length; i++) {
-                    if ( typeof apList[i] === 'string') {
+                    if (typeof apList[i] === 'string') {
                         key = apList[i];
                         apRule[key] = {
-                            'type' : '' + apList[i]
+                            'type': '' + apList[i]
                         };
                     }
                     else if (Object.prototype.toString.call(apList[i]) === '[object Array]') {
                         if (apList[i].length && apList[i][0]) {
                             key = apList[i][0];
                             apRule[key] = {
-                                'type' : '' + apList[i][0]
+                                'type': '' + apList[i][0]
                             };
                             apList[i][1] && (apRule[key].value = '' + apList[i][1]);
                         }
@@ -205,7 +205,7 @@ module.exports = function(options) {
     }
 
     var appendto = {
-        'css' : function(content, k, v) {
+        'css': function (content, k, v) {
             var sts = content.match(/<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
@@ -224,7 +224,7 @@ module.exports = function(options) {
             }
             return content;
         },
-        'js' : function(content, k, v) {
+        'js': function (content, k, v) {
             var sts = content.match(/<script[^>]*src=['"]?([^>'"]*)['"]?[^>]*>[^<]*<\/script>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
@@ -243,7 +243,7 @@ module.exports = function(options) {
             }
             return content;
         },
-        'image' : function(content, k, v) {
+        'image': function (content, k, v) {
             var sts = content.match(/<img[^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
@@ -263,19 +263,19 @@ module.exports = function(options) {
             return content;
         }
     };
-    
+
     /**
      * output a json version file
      */
     if (options.output && options.output.file) {
-        fs.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function(err) {
+        fs.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function (err) {
             if (err)
                 throw err;
             console.log('[gulp-version-number] Output to file: ' + options.output.file);
         });
     }
 
-    return map(function(file, cb) {
+    return map(function (file, cb) {
 
         if (file.isNull()) {
             return cb(null, file);
@@ -285,12 +285,12 @@ module.exports = function(options) {
             return cb(new gutil.PluginError('gulp-version-number', 'Streaming not supported'));
         }
 
-        tempWrite(file.contents, path.extname(file.path), function(err, tempFile) {
+        tempWrite(file.contents, path.extname(file.path), function (err, tempFile) {
             if (err) {
                 return cb(new gutil.PluginError('gulp-version-number', err));
             }
 
-            fs.stat(tempFile, function(err, stats) {
+            fs.stat(tempFile, function (err, stats) {
                 if (err) {
                     return cb(new gutil.PluginError('gulp-version-number', err));
                 }
@@ -298,8 +298,8 @@ module.exports = function(options) {
                 options = options || {};
 
                 fs.readFile(tempFile, {
-                    encoding : 'UTF-8'
-                }, function(err, data) {
+                    encoding: 'UTF-8'
+                }, function (err, data) {
                     if (err) {
                         return cb(new gutil.PluginError('gulp-version-number', err));
                     }
