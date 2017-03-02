@@ -206,7 +206,7 @@ module.exports = function (options) {
 
     var appendto = {
         'css': function (content, k, v) {
-            var sts = content.match(/<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
+            var sts = content.match(/<link [^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
                     var _RULE = sts[i].match(/href=['"]?([^>'"]*)['"]?/);
@@ -225,7 +225,7 @@ module.exports = function (options) {
             return content;
         },
         'js': function (content, k, v) {
-            var sts = content.match(/<script[^>]*src=['"]?([^>'"]*)['"]?[^>]*>[^<]*<\/script>/g);
+            var sts = content.match(/<script [^>]*src=['"]?([^>'"]*)['"]?[^>]*>[^<]*<\/script>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
                     var _RULE = sts[i].match(/src=['"]?([^>'"]*)['"]?/);
@@ -244,7 +244,7 @@ module.exports = function (options) {
             return content;
         },
         'image': function (content, k, v) {
-            var sts = content.match(/<img[^>]*>/g);
+            var sts = content.match(/<img [^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
                     var _RULE = sts[i].match(/src=['"]?([^>'"]*)['"]?/);
