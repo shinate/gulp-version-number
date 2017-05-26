@@ -65,6 +65,8 @@ var path = require('path');
 var gutil = require('gulp-util');
 var map = require('map-stream');
 var fs = require('graceful-fs');
+var fsPath = require('fs-path');
+
 var tempWrite = require('temp-write');
 var util = require('util');
 
@@ -268,7 +270,7 @@ module.exports = function (options) {
      * output a json version file
      */
     if (options.output && options.output.file) {
-        fs.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function (err) {
+        fsPath.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function (err) {
             if (err)
                 throw err;
             console.log('[gulp-version-number] Output to file: ' + options.output.file);
