@@ -211,17 +211,29 @@ module.exports = function (options) {
             var sts = content.match(/<link [^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
             if (util.isArray(sts) && sts.length) {
                 for (var i = 0, len = sts.length; i < len; i++) {
-                    var _RULE = sts[i].match(/href=['"]?([^>'"]*)['"]?/);
-                    if (_RULE[1]) {
-                        var _UrlPs = parseURL(_RULE[1]);
-                        var _Query = queryToJson(_UrlPs.query);
-                        var _Append = {};
-                        if (!_Query.hasOwnProperty(k) || this['cover']) {
-                            _Append[k] = v;
+                    var _RULES = sts[i].match(/href=(["]+([^>"]*)["]+|[']+([^>']*)[']+)/g);
+                    var st_content = sts[i];
+
+                    for(var j = 0; j < _RULES.length; j++)
+                    {
+                        var _RULE = _RULES[j].match(/(["]+([^>"]*)["]+|[']+([^>']*)[']+)/);
+                        var _MATCH = _RULE[2] || _RULE[3];
+
+                        if (_MATCH) {
+                            var _UrlPs = parseURL(_MATCH);
+                            var _Query = queryToJson(_UrlPs.query);
+                            var _Append = {};
+                            if (!_Query.hasOwnProperty(k) || this['cover']) {
+                                _Append[k] = v;
+                            }
+
+                            _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
+
+                            st_content = st_content.replace(_MATCH, renderingURL(_UrlPs));
                         }
-                        _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
-                        content = content.replace(sts[i], sts[i].replace(_RULE[1], renderingURL(_UrlPs)));
                     }
+
+                    content = content.replace(sts[i], st_content);
                 }
             }
             return content;
