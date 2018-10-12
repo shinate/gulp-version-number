@@ -32,8 +32,9 @@
  *          // missing items will take the global settings in
  *          // the completion
  * 			{
- *				'type' : 'js',
- *				'key' : '_v',
+ *				'type'  : 'js',
+ *			    'attr'  : ['src', 'custom-src'] // String or Array, undefined this will use default. css: "href", js: ...
+ *				'key'   : '_v',
  *				'value' : '%DATE%',
  *				'cover' : 1
  *			},
@@ -112,6 +113,18 @@ function version(v) {
     return v;
 }
 
+var DETECTION = {
+    css: /<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g,
+    js: /<script [^>]+>[^<]*<\/script>/g,
+    image: /<img [^>]+>/g
+};
+
+var DEFAULT_ATTR = {
+    css: 'href',
+    js: 'src',
+    image: 'src'
+}
+
 /**
  * options:
  *  type:
@@ -127,7 +140,7 @@ function version(v) {
 module.exports = function (options) {
 
     var options = util._extend({
-        'value': '%TS%'
+        'value': '%TS%' // default
     }, options || {});
 
     var versionNumberList = {
@@ -157,7 +170,6 @@ module.exports = function (options) {
 
     function apply_append(content, config) {
 
-        var _key = config['key'] || '_v';
         var apList = [];
         if (config['to']) {
             if (config.to === 'all') {
@@ -197,7 +209,7 @@ module.exports = function (options) {
 
                 for (var type in apRule) {
                     !versionNumberList[type] && (versionNumberList[type] = apRule[type]['value'] ? version(apRule[type]['value']) : versionNumberList.main);
-                    content = appendto[type].call(apRule[type], content, apRule[type]['key'] || config['key'], versionNumberList[type]);
+                    content = appendto.call(apRule[type], content, apRule[type]['key'] || config['key'] || '_v', versionNumberList[type]);
                 }
 
             }
@@ -206,65 +218,31 @@ module.exports = function (options) {
         return content;
     }
 
-    var appendto = {
-        'css': function (content, k, v) {
-            var sts = content.match(/<link [^>]*rel=['"]?stylesheet['"]?[^>]*>/g);
-            if (util.isArray(sts) && sts.length) {
-                for (var i = 0, len = sts.length; i < len; i++) {
-                    var _RULE = sts[i].match(/href=['"]?([^>'"]*)['"]?/);
-                    if (_RULE[1]) {
-                        var _UrlPs = parseURL(_RULE[1]);
+    function appendto(content, k, v) {
+        this.attr = this['attr'] ? [].concat(this.attr) : [DEFAULT_ATTR[this.type]];
+        var sts = content.match(DETECTION[this.type]);
+        if (util.isArray(sts) && sts.length) {
+            var regExp = new RegExp('(' + this.attr.join('|') + ')' + '=[\'"]?([^>\'"]*)[\'"]?', 'g');
+            sts.forEach(function (_s) {
+                var _r = _s;
+                var _RULE;
+                while (_RULE = regExp.exec(_s)) {
+                    if (_RULE[2]) {
+                        var _UrlPs = parseURL(_RULE[2]);
                         var _Query = queryToJson(_UrlPs.query);
                         var _Append = {};
                         if (!_Query.hasOwnProperty(k) || this['cover']) {
                             _Append[k] = v;
                         }
                         _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
-                        content = content.replace(sts[i], sts[i].replace(_RULE[1], renderingURL(_UrlPs)));
+                        _r = _r.replace(_RULE[2], renderingURL(_UrlPs));
                     }
                 }
-            }
-            return content;
-        },
-        'js': function (content, k, v) {
-            var sts = content.match(/<script [^>]*src=['"]?([^>'"]*)['"]?[^>]*>[^<]*<\/script>/g);
-            if (util.isArray(sts) && sts.length) {
-                for (var i = 0, len = sts.length; i < len; i++) {
-                    var _RULE = sts[i].match(/src=['"]?([^>'"]*)['"]?/);
-                    if (_RULE[1]) {
-                        var _UrlPs = parseURL(_RULE[1]);
-                        var _Query = queryToJson(_UrlPs.query);
-                        var _Append = {};
-                        if (!_Query.hasOwnProperty(k) || this['cover']) {
-                            _Append[k] = v;
-                        }
-                        _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
-                        content = content.replace(sts[i], sts[i].replace(_RULE[1], renderingURL(_UrlPs)));
-                    }
-                }
-            }
-            return content;
-        },
-        'image': function (content, k, v) {
-            var sts = content.match(/<img [^>]*>/g);
-            if (util.isArray(sts) && sts.length) {
-                for (var i = 0, len = sts.length; i < len; i++) {
-                    var _RULE = sts[i].match(/src=['"]?([^>'"]*)['"]?/);
-                    if (_RULE[1]) {
-                        var _UrlPs = parseURL(_RULE[1]);
-                        var _Query = queryToJson(_UrlPs.query);
-                        var _Append = {};
-                        if (!_Query.hasOwnProperty(k) || this['cover']) {
-                            _Append[k] = v;
-                        }
-                        _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
-                        content = content.replace(sts[i], sts[i].replace(_RULE[1], renderingURL(_UrlPs)));
-                    }
-                }
-            }
-            return content;
+                content = content.replace(_s, _r);
+            }.bind(this));
         }
-    };
+        return content;
+    }
 
     /**
      * output a json version file

@@ -107,8 +107,9 @@ Add version number to js/css/image in HTML
                  * type is necessary, otherwise passing.
                  */
                 {
-                    'type' : 'js',
-                    'key' : '_v',
+                    'type'  : 'js',
+                    'attr'  : ['src', 'custom-src'] // String or Array, undefined this will use default. css: "href", js: ...
+                    'key'   : '_v',
                     'value' : '%DATE%',
                     'cover' : 1
                 }
@@ -146,6 +147,21 @@ Add version number to js/css/image in HTML
 
 
 ## Change log ##
+
+##### = 0.2.0 = #####
+- Add a configure prop to "Object" model at "options.append.to", set the attribute what you want to match
+```javascript
+append : {
+ to : [
+   '???': {
+     ...,
+     'attr': [...] // string or array
+     ...
+   },
+   ...
+ ]
+}
+```
 
 ##### = 0.1.4 = #####
 - Detailed description comment and readme.
