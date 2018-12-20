@@ -11,15 +11,15 @@ gulp.task('all', function () {
                 to: [
                     ['image', '%MD5%'],
                     {
-                        type: 'css',
-                        attr: ['href', 'custom-href'],
-                        key: '_VeRsIoN_',
+                        type : 'css',
+                        attr : ['href', 'custom-href'],
+                        key  : '_VeRsIoN_',
                         value: '%MDS%'
                     },
                     {
-                        type: 'js',
-                        attr: ['custom-src', 'node-js-loader'], // but "src" not matched, strictly use this custom
-                        key: '_VeRsIoN_',
+                        type : 'js',
+                        attr : ['custom-src', 'node-js-loader'], // but "src" not matched, strictly use this custom
+                        key  : '_VeRsIoN_',
                         value: '%TS%'
                     }
                 ]

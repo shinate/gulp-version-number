@@ -62,14 +62,10 @@
  */
 
 'use strict';
-var path = require('path');
-var gutil = require('gulp-util');
-var map = require('map-stream');
-var fs = require('graceful-fs');
-var fsPath = require('fs-path');
 
-var tempWrite = require('temp-write');
-var util = require('util');
+var gutil = require('gulp-util');
+var mapStream = require('map-stream');
+var fsPath = require('fs-path');
 
 var md5 = require('./lib/md5');
 var randomString = require('./lib/randomString');
@@ -114,14 +110,14 @@ function version(v) {
 }
 
 var DETECTION = {
-    css: /<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g,
-    js: /<script [^>]+>[^<]*<\/script>/g,
+    css  : /<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g,
+    js   : /<script [^>]+>[^<]*<\/script>/g,
     image: /<img [^>]+>/g
 };
 
 var DEFAULT_ATTR = {
-    css: 'href',
-    js: 'src',
+    css  : 'href',
+    js   : 'src',
     image: 'src'
 }
 
@@ -139,7 +135,7 @@ var DEFAULT_ATTR = {
  */
 module.exports = function (options) {
 
-    var options = util._extend({
+    var options = Object.assign({
         'value': '%TS%' // default
     }, options || {});
 
@@ -152,7 +148,7 @@ module.exports = function (options) {
         if (config.length) {
             for (var i = 0, len = config.length; i < len; i++) {
                 var rep, v;
-                if (util.isArray(config[i])) {
+                if (Array.isArray(config[i])) {
                     rep = config[i][0];
                     v = version(config[i][1]);
                     if (v === null)
@@ -179,7 +175,7 @@ module.exports = function (options) {
                 apList = config.to;
             }
 
-            if (util.isArray(apList)) {
+            if (Array.isArray(apList)) {
                 var apRule = {};
                 for (var i = 0, key; i < apList.length; i++) {
                     if (typeof apList[i] === 'string') {
@@ -221,7 +217,7 @@ module.exports = function (options) {
     function appendto(content, k, v) {
         this.attr = this['attr'] ? [].concat(this.attr) : [DEFAULT_ATTR[this.type]];
         var sts = content.match(DETECTION[this.type]);
-        if (util.isArray(sts) && sts.length) {
+        if (Array.isArray(sts) && sts.length) {
             var regExp = new RegExp('(' + this.attr.join('|') + ')' + '=[\'"]?([^>\'"]*)[\'"]?', 'g');
             sts.forEach(function (_s) {
                 var _r = _s;
@@ -234,7 +230,7 @@ module.exports = function (options) {
                         if (!_Query.hasOwnProperty(k) || this['cover']) {
                             _Append[k] = v;
                         }
-                        _UrlPs.query = jsonToQuery(util._extend(_Query, _Append));
+                        _UrlPs.query = jsonToQuery(Object.assign(_Query, _Append));
                         _r = _r.replace(_RULE[2], renderingURL(_UrlPs));
                     }
                 }
@@ -255,7 +251,7 @@ module.exports = function (options) {
         });
     }
 
-    return map(function (file, cb) {
+    return mapStream(function (file, cb) {
 
         if (file.isNull()) {
             return cb(null, file);
@@ -265,31 +261,11 @@ module.exports = function (options) {
             return cb(new gutil.PluginError('gulp-version-number', 'Streaming not supported'));
         }
 
-        tempWrite(file.contents, path.extname(file.path), function (err, tempFile) {
-            if (err) {
-                return cb(new gutil.PluginError('gulp-version-number', err));
-            }
+        var data = file.contents.toString();
 
-            fs.stat(tempFile, function (err, stats) {
-                if (err) {
-                    return cb(new gutil.PluginError('gulp-version-number', err));
-                }
-
-                options = options || {};
-
-                fs.readFile(tempFile, {
-                    encoding: 'UTF-8'
-                }, function (err, data) {
-                    if (err) {
-                        return cb(new gutil.PluginError('gulp-version-number', err));
-                    }
-                    options['replaces'] && ( data = apply_replace(data, options.replaces));
-                    options['append'] && ( data = apply_append(data, options.append));
-                    file.contents = new Buffer(data);
-                    cb(null, file);
-                });
-
-            });
-        });
+        options['replaces'] && ( data = apply_replace(data, options.replaces));
+        options['append'] && ( data = apply_append(data, options.append));
+        file.contents = new Buffer(data);
+        cb(null, file);
     });
 };

@@ -1,36 +1,31 @@
 {
   "name": "gulp-version-number",
   "description": "Add version number to css/js/image... in HTML file.",
-  "version": "0.2.0",
-  "author": {
-    "name": "Shinate",
-    "email": "shine.wangrs@gmail.com"
-  },
+  "version": "0.2.1",
+  "author": "Shinate <shine.wangrs@gmail.com>",
   "bugs": {
     "url": "https://github.com/shinate/gulp-version-number/issues"
   },
   "main": "index.js",
-  "homepage": "https://github.com/shinate/gulp-version-number/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/shinate/gulp-version-number.git"
+  "scripts": {
+    "test": "gulp all"
   },
+  "homepage": "https://github.com/shinate/gulp-version-number/",
+  "repository": "https://github.com/shinate/gulp-version-number.git",
   "engines": {
     "node": ">= 0.9"
   },
   "keywords": [
     "gulp",
+    "version",
+    "cdn",
     "plugin"
   ],
   "license": "MIT",
   "dependencies": {
-    "fs-path": "0.0.23",
-    "graceful-fs": "^3.0.11",
-    "gulp-util": "^3.0.2",
-    "map-stream": "0.0.5",
-    "path": "^0.12.7",
-    "temp-write": "^1.1.0",
-    "util": "^0.10.3"
+    "fs-path": "^0.0.24",
+    "gulp-util": "^3.0.8",
+    "map-stream": "^0.0.7"
   },
   "devDependencies": {
     "gulp": "^3.9.1"
