@@ -63,7 +63,6 @@
 
 'use strict';
 
-var gutil = require('gulp-util');
 var mapStream = require('map-stream');
 var fsPath = require('fs-path');
 
@@ -258,7 +257,7 @@ module.exports = function (options) {
         }
 
         if (file.isStream()) {
-            return cb(new gutil.PluginError('gulp-version-number', 'Streaming not supported'));
+            throw new Error('Streaming not supported');
         }
 
         var data = file.contents.toString();
@@ -266,6 +265,7 @@ module.exports = function (options) {
         options['replaces'] && ( data = apply_replace(data, options.replaces));
         options['append'] && ( data = apply_append(data, options.append));
         file.contents = new Buffer(data);
+
         cb(null, file);
     });
 };
