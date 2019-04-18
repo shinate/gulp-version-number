@@ -166,8 +166,6 @@ module.exports = function (options) {
     }
 
     function apply_append(content, config) {
-        console.log(config);
-
         var apList = [];
         if (config['to']) {
             if (config.to === 'all') {
