@@ -111,7 +111,8 @@ Add version number to js/css/image in HTML
                     'attr'  : ['src', 'custom-src'] // String or Array, undefined this will use default. css: "href", js: ...
                     'key'   : '_v',
                     'value' : '%DATE%',
-                    'cover' : 1
+                    'cover' : 1,
+                    'files': ['build.js', /dependency.js/] // Array [{String|Regex}] of explicit files to append to
                 }
             ]
         },

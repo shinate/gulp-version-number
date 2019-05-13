@@ -111,11 +111,13 @@ function version(v) {
 var DETECTION = {
     css  : /<link[^>]*rel=['"]?stylesheet['"]?[^>]*>/g,
     js   : /<script [^>]+>[^<]*<\/script>/g,
-    image: /<img [^>]+>/g
+    image: /<img [^>]+>/g,
+    preload: /<link[^>]*rel=['"]?preload['"]?[^>]*>/g
 };
 
 var DEFAULT_ATTR = {
     css  : 'href',
+    preload  : 'href',
     js   : 'src',
     image: 'src'
 }
@@ -164,7 +166,6 @@ module.exports = function (options) {
     }
 
     function apply_append(content, config) {
-
         var apList = [];
         if (config['to']) {
             if (config.to === 'all') {
@@ -216,6 +217,29 @@ module.exports = function (options) {
     function appendto(content, k, v) {
         this.attr = this['attr'] ? [].concat(this.attr) : [DEFAULT_ATTR[this.type]];
         var sts = content.match(DETECTION[this.type]);
+
+        if (Array.isArray(sts) && sts.length && this['files']) {
+            var files = this.files;
+            
+            sts = sts.filter(function(element) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+
+                    if (typeof file == 'string') {
+                        if (element.indexOf(file) > -1) {
+                            return true;
+                        }
+                    } else if (file instanceof RegExp) {
+                        if (element.match(file)) {
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            });
+        }
+
         if (Array.isArray(sts) && sts.length) {
             var regExp = new RegExp('(' + this.attr.join('|') + ')' + '=[\'"]?([^>\'"]*)[\'"]?', 'g');
             sts.forEach(function (_s) {
