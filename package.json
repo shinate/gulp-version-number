@@ -13,7 +13,7 @@
   "homepage": "https://github.com/shinate/gulp-version-number/",
   "repository": "https://github.com/shinate/gulp-version-number.git",
   "engines": {
-    "node": ">= 0.9"
+    "node": ">= 12"
   },
   "keywords": [
     "gulp",
@@ -23,7 +23,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "fs-path": "^0.0.24",
     "map-stream": "^0.0.7"
   },
   "devDependencies": {

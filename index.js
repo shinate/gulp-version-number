@@ -1,33 +1,33 @@
 /**
  * config : {
- * 
+ *
  *  // VALUE, default: '%MDS%'
  *	'value' : '%MDS%',
- * 
+ *
  * 	// REPLACE
  *	'replaces' : [
  * 		// if not an array, replace to global value (config.value)
  *		/#{VERSION}#/g,
  *		[/#{VERSION_REPlACE}#/g, '%TS%']
  *	],
- * 
+ *
  *	// APPEND
  *	'append' : {
- * 
+ *
  *      // keyword
  *		'key' : '_v',
- * 
+ *
  *      // Whether to overwrite the existing parameters
  *      //  - default: 0 (don't replace)
  *		'cover' : 0,
- * 
+ *
  * 		// Append to：ALL('all') or any specific types(ARRAY),
  *      // others will passing.
  *		'to' : [
- * 
+ *
  * 			// (STRING) If this option is a string, apply global replace rules
  * 			'css',
- * 
+ *
  * 			// (OBJECT) With custom rules to be replaced, the
  *          // missing items will take the global settings in
  *          // the completion
@@ -38,12 +38,12 @@
  *				'value' : '%DATE%',
  *				'cover' : 1
  *			},
- * 
+ *
  * 			// (ARRAY) More simple than the object, Just specify
  *          // the type and value
  * 			['image', '%TS%']
  *		},
- * 
+ *
  * 		// Output to config file
  *		'output' : {
  *			'file' : 'version.json'
@@ -64,8 +64,6 @@
 'use strict';
 
 var mapStream = require('map-stream');
-var fsPath = require('fs-path');
-
 var md5 = require('./lib/md5');
 var randomString = require('./lib/randomString');
 var leadZero = require('./lib/leadZero');
@@ -73,6 +71,8 @@ var parseURL = require('./lib/parseURL');
 var renderingURL = require('./lib/renderingURL');
 var queryToJson = require('./lib/queryToJson');
 var jsonToQuery = require('./lib/jsonToQuery');
+
+const fsp = require('fs').promises;
 
 function version(v) {
 
@@ -220,7 +220,7 @@ module.exports = function (options) {
 
         if (Array.isArray(sts) && sts.length && this['files']) {
             var files = this.files;
-            
+
             sts = sts.filter(function(element) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
@@ -235,7 +235,7 @@ module.exports = function (options) {
                         }
                     }
                 }
-                
+
                 return false;
             });
         }
@@ -263,15 +263,26 @@ module.exports = function (options) {
         return content;
     }
 
+   /**
+     * Helper function to write asynchronously the version into the file
+     */
+    async function writeVersion( file, content ) {
+        try {
+            await fs.promises.mkdir(
+                 path.dirname( file ), {recursive: true})
+                 .then(
+                     await fsp.writeFile( file, JSON.stringify( content, null, 4 ) )
+                 );
+         } catch (error){
+             console.log('[gulp-version-number] Output to file: ' + options.output.file);
+         }
+    }
+
     /**
      * output a json version file
      */
     if (options.output && options.output.file) {
-        fsPath.writeFile(options.output.file, JSON.stringify(versionNumberList, null, 4), function (err) {
-            if (err)
-                throw err;
-            console.log('[gulp-version-number] Output to file: ' + options.output.file);
-        });
+        writeVersion( options.output.file, versionNumberList )
     }
 
     return mapStream(function (file, cb) {
