@@ -18,13 +18,13 @@ Add version number to js/css/image in HTML
 **config**
 
     {
-    
+
         /**
          * Global version value
          * default: %MDS%
          */
         'value' : '%MDS%',
-    
+
         /**
          * MODE: REPLACE
          * eg:
@@ -34,32 +34,32 @@ Add version number to js/css/image in HTML
          *    [/regexp/ig, '%MD5%']]
          */
         'replaces' : [
-        
+
             /**
              * {String|Regexp} Replace Keyword/Rules to global value (config.value)
              */
             '#{VERSION_REPlACE}#',
-            
+
             /**
              * {Array}
              * Replace keyword to custom value
              * if just have keyword, the value will use the global value (config.value).
-             */    
+             */
             [/#{VERSION_REPlACE}#/g, '%TS%']
         ],
-        
-        
+
+
         /**
          * MODE: APPEND
          * Can coexist and replace, after execution to replace
          */
         'append' : {
-        
+
             /**
              * Parameter
              */
             'key' : '_v',
-            
+
             /**
              * Whether to overwrite the existing parameters
              * default: 0 (don't overwrite)
@@ -67,14 +67,14 @@ Add version number to js/css/image in HTML
              * If you need to cover, please set to 1
              */
             'cover' : 0,
-            
+
             /**
              * Appended to the position (specify type)
              * {String|Array|Object}
              * If you set to 'all', will apply to all type, rules will use the global setting.
              * If an array or object, will use your custom rules.
              * others will passing.
-             * 
+             *
              * eg:
              *     'js'
              *     ['js']
@@ -82,28 +82,28 @@ Add version number to js/css/image in HTML
              *     ['css', '%DATE%']
              */
             'to' : [
-            
+
                 /**
                  * {String} Specify type, the value is the global value
                  */
                 'css',
-                
+
                 /**
                  * {Array}
-                 * Specify type, keyword and cover rules will use the global 
-                 * setting, If you need more details, please use the object 
+                 * Specify type, keyword and cover rules will use the global
+                 * setting, If you need more details, please use the object
                  * configure.
                  *
                  * argument 0 necessary, otherwise passing.
                  * argument 1 optional, the value will use the global value
                  */
                   ['image', '%TS%'],
-                  
+
                 /**
                  * {Object}
-                 * Use detailed custom rules to replace, missing items will 
+                 * Use detailed custom rules to replace, missing items will
                  * be taken in setting the global completion
-                 
+
                  * type is necessary, otherwise passing.
                  */
                 {
@@ -116,7 +116,7 @@ Add version number to js/css/image in HTML
                 }
             ]
         },
-     
+
         /**
          * Output to config file
          */
@@ -148,6 +148,10 @@ Add version number to js/css/image in HTML
 
 
 ## Change log ##
+
+#### = 0.3.0 = ####
+- Drop fsPath dependency, due to having a known security issue.
+- Replace fsPath with native fs functions
 
 ##### = 0.2.0 = #####
 - Add a configure prop to "Object" model at "options.append.to", set the attribute what you want to match

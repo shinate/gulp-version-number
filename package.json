@@ -1,7 +1,7 @@
 {
   "name": "gulp-version-number",
   "description": "Add version number to css/js/image... in HTML file.",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "author": "Shinate <shine.wangrs@gmail.com>",
   "bugs": {
     "url": "https://github.com/shinate/gulp-version-number/issues"
